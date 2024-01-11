@@ -72,7 +72,8 @@ namespace PasswordAuthenticationFlowExample
             // EXEPRON API Supports OData so we can just query the fields that we want to see using the $select keyword:
             var userResponse = await client.GetStringAsync("Accounts/Users/GetLoggedinUser?$select=userId,accountId");
             // OPTIONAL: Deserialize to the class you want to use in C#, you can also use the text received to parse the query.
-            var exepronUser = JsonSerializer.Deserialize<ExepronUser>(userResponse);
+            var exepronUsers = JsonSerializer.Deserialize<ExepronUser[]>(userResponse);
+            var exepronUser = exepronUsers[0];            
             
             // Get some tasks from exepron.
             var activeTasksRequest = await client.GetStringAsync($"Accounts/{exepronUser.accountId}/Users/{exepronUser.userId}/GetUserActiveTasks?$select=taskId,taskNumber,taskName,remainingDuration");
